@@ -8,11 +8,13 @@ export const processCompletedCheckRunGithubEvent = (githubEvent: GithubEvent) =>
   const durationInMinutes = (completedAt.getTime() - startedAt.getTime()) / 60000
   const jobResult = githubEvent.payload.check_run.conclusion
   const jobName = githubEvent.payload.check_run.name
+  const runId = githubEvent.payload.check_run.check_suite.id
 
   console.log(JSON.stringify({
     eventType: 'jobFinished',
     durationInMinutes,
     jobResult,
-    jobName
+    jobName,
+    runId
   }))
 }
