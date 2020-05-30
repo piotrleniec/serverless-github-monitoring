@@ -6,6 +6,8 @@ Parameters:
     Type: String
   ApplicationName:
     Type: String
+  GithubWebhookSecret:
+    Type: String
 
 Resources:
   ApiGateway:
@@ -22,6 +24,9 @@ Resources:
       CodeUri: process-github-webhook
       Handler: dist/index.handler
       Runtime: nodejs12.x
+      Environment:
+        Variables:
+          GITHUB_WEBHOOK_SECRET: !Ref GithubWebhookSecret
       Events:
         GetRequest:
           Type: Api
