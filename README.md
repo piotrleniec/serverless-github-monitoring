@@ -66,3 +66,8 @@ filter eventType = 'jobFinished'
 filter eventType = 'jobFinished'
 | stats count(*) by bin(1h)
 ```
+
+```
+filter eventType = 'jobFinished'
+| stats sum(durationInMinutes) by runId
+```
