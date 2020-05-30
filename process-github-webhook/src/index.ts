@@ -19,13 +19,15 @@ interface Response {
 }
 
 export const handler = async (event: Event, _context: Context): Promise<Response> => {
+  if (!event.body) return { statusCode: 400 }
+  if (!event.headers['X-Hub-Signature']) return { statusCode: 400 }
   if (!isHubSignatureValid(event.body, event.headers['X-Hub-Signature'])) {
     return { statusCode: 400 }
   }
 
   const githubEvent = createGithubEvent(
     event.headers['X-GitHub-Event'],
-    event.body!
+    event.body
   )
   processGithubEvent(githubEvent)
 

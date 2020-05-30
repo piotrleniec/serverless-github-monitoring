@@ -15,10 +15,7 @@ const calculateSignature = (requestBody: string): string => {
   return `sha1=${hmac.digest('hex')}`
 }
 
-export const isHubSignatureValid = (requestBody: string | null, hubSignature: string | undefined): boolean => {
-  if (!requestBody) return false
-  if (!hubSignature) return false
-
+export const isHubSignatureValid = (requestBody: string, hubSignature: string): boolean => {
   const signature = calculateSignature(requestBody)
 
   return timingSafeEqual(Buffer.from(signature), Buffer.from(hubSignature))
