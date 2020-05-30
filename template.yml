@@ -1,0 +1,31 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+
+Parameters:
+  AccountId:
+    Type: String
+  ApplicationName:
+    Type: String
+
+Resources:
+  ApiGateway:
+    Type: AWS::Serverless::Api
+    Properties:
+      Name: !Sub '${ApplicationName}-api-gateway'
+      StageName: main
+      OpenApiVersion: '2.0'
+  ProcessGithubWebhookFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: !Sub '${ApplicationName}-process-github-webhook-function'
+      Role: !Sub 'arn:aws:iam::${AccountId}:role/${ApplicationName}-process-github-webhook-function-role'
+      CodeUri: process-github-webhook
+      Handler: dist/index.handler
+      Runtime: nodejs12.x
+      Events:
+        GetRequest:
+          Type: Api
+          Properties:
+            RestApiId: !Ref ApiGateway
+            Path: /process-github-webhook
+            Method: POST
