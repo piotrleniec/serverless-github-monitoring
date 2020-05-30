@@ -7,10 +7,12 @@ export const processCompletedCheckRunGithubEvent = (githubEvent: GithubEvent) =>
   const completedAt = new Date(githubEvent.payload.check_run.completed_at)
   const durationInMinutes = (completedAt.getTime() - startedAt.getTime()) / 60000
   const conclusion = githubEvent.payload.check_run.conclusion
+  const jobName = githubEvent.payload.check_run.name
 
   console.log({
     type: 'job-duration',
     durationInMinutes,
-    conclusion
+    conclusion,
+    jobName
   })
 }
