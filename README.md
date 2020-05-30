@@ -52,3 +52,17 @@
     ]
 }
 ```
+
+## Sample CloudWatch Logs Insights Queries
+
+```
+filter eventType = 'job-duration'
+| filter jobResult = '{{ JOB_RESULT }}'
+| filter jobName = '{{ JOB_NAME }}'
+| stats avg(durationInMinutes) by bin(1h)
+```
+
+```
+filter eventType = 'job-duration'
+| stats count(*) by bin(1h)
+```
